@@ -15,6 +15,7 @@ RUN apt update && apt install -y\
 	libssl-dev\
 	nano\
 	libsqlite3-dev\
+	libncurses5-dev\ 
 	curl
 #RUN repo init  -u https://source.codeaurora.org/quic/le/le/manifest/refs/?h=IMM.LE.1.0\
 #	-b release -m caf_AU_LINUX_EMBEDDED_IMM.LE.1.0_TARGET_ALL.01.04.002.xml
@@ -42,6 +43,14 @@ RUN mv local.conf local.conf.bak
 COPY local.conf .
 WORKDIR "/sources/poky"
 RUN ./oe-init-build-env
+RUN dpkg-reconfigure locales &&\
+	locale-gen en_US.UTF-8  &&\
+	update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 &&\
+	export LANG=en_US.UTF-8
+RUN mv /sources/poky/meta/conf/sanity.conf /sources/poky/meta/conf/sanity.conf.bak
+COPY sanity.conf /sources/poky/meta/conf
+
+
 
 
 
