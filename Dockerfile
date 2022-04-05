@@ -42,13 +42,13 @@ WORKDIR "/sources/poky/build/conf"
 RUN mv local.conf local.conf.bak
 COPY local.conf .
 WORKDIR "/sources/poky"
-RUN ./oe-init-build-env
 RUN dpkg-reconfigure locales &&\
 	locale-gen en_US.UTF-8  &&\
-	update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 &&\
-	export LANG=en_US.UTF-8
+	update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 
 RUN mv /sources/poky/meta/conf/sanity.conf /sources/poky/meta/conf/sanity.conf.bak
 COPY sanity.conf /sources/poky/meta/conf
+RUN  /bin/bash -c "source oe-init-build-env && export LANG=en_US.UTF-8 && bitbake core-image-minimal -c do_populate_sdk"
+
 
 
 
